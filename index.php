@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $display = $_POST['display'];
     }
 
+        //---------condition for = ---------
     if (isset($_POST['equal'])) {
         try {
             $allowed_funcs = ['sqrt'];
@@ -15,10 +16,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } catch (Throwable $e) {
             $display = "error";
         }
+
+        //---------condition to remove one number---------
     } elseif (isset($_POST['C'])) {
         $display = substr($display, 0, -1); 
+        
+        //---------condition to remove everything---------
     } elseif (isset($_POST['AC'])) {
         $display = ""; 
+
+    }
+        
+        //---------condition to calcul %--------- 
+    if (isset($_POST['percent'])) {
+        $display = $display / 100;
     }
 }
 ?>
@@ -31,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
+        <!-- --------- switch theme buttun --------- -->
         <div style="position: absolute; top:20px; right:20px; margin:20px;">
             <button type="button" onclick="document.body.classList.toggle('light'); localStorage.theme=document.body.classList.contains('light')?'light':'dark';">
                 dark/light
@@ -40,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </header>
     <div class="container">
         <h1>Calculaiter</h1>
+
         <form method="post">
             <div class="output">
                 <input type="text" name="display" value="<?php echo htmlspecialchars($display); ?>" readonly>
@@ -48,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button type="submit" name="AC" id="AC">AC</button>
                 <button type="submit" name="display" value="<?php echo $display.'('; ?>">(</button>
                 <button type="submit" name="display" value="<?php echo $display.')'; ?>">)</button>
-                <button type="submit" name="display" value="<?php echo $display.''; ?>">%</button>
+                <button type="submit" name="percent">%</button>
 
                 <button type="submit" name="C">C</button>
                 <button type="submit" name="display" value="<?php echo $display.'**'; ?>">xʸ</button>
@@ -78,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
+    <!-- ---------Restore theme on page load--------- -->
     <script>
     if(localStorage.theme==="light")document.body.classList.add('light');</script>
     </script>
